@@ -1,0 +1,32 @@
+INIT Bootnode
+geth --datadir ~/.ethereum/bootnode init /htdocs/localEth/config/genesis.json
+
+bootnode --genkey=boot.key
+bootnode --verbosity 6 --nodekey=boot.key
+
+NODE START
+geth --datadir ~/.ethereum/net42 init /htdocs/localEth/config/genesis.json
+geth --port 30304 --datadir ~/.ethereum/net42 --networkid 42 --rpc --ipcdisable --rpcport 8101 --bootnodes enode://e821940c5b46fbae7f5ced1cb13d5cfc9fa119f3d24c9fe1bb7902e5f94e584b7f5c10f28f7da41c8bb4c8f70b58dcb498a73cbe13ee0d3fe8dbd2ce5d4ddee7@127.0.0.1:30301 console
+
+second node connected:
+geth --datadir ~/.ethereum/net42-1 init /htdocs/localEth/config/genesis.json
+geth --port 30305 --datadir ~/.ethereum/net42-1 --networkid 42 --rpc --ipcdisable --rpcport 8102 --bootnodes enode://49a92886807185bb756ec469a78f0e056750497fca627bd5767e62cc7cb171dfff0c5935b3ba884104a732cf50efb88f457d46495f43edb4c5ef035aff206092@127.0.0.1:30301 console
+
+third node connected:
+geth --datadir ~/.ethereum/net42-2 init /htdocs/localEth/config/genesis.json
+geth --port 30306 --datadir ~/.ethereum/net42-2 --networkid 42 --rpc --ipcdisable --rpcport 8103 --bootnodes enode://49a92886807185bb756ec469a78f0e056750497fca627bd5767e62cc7cb171dfff0c5935b3ba884104a732cf50efb88f457d46495f43edb4c5ef035aff206092@127.0.0.1:30301 console
+
+CONSOLE ATTACH
+geth --datadir ~/.ethereum/net42 --networkid 42 attach ipc:~/.ethereum/net42/geth.ipc
+
+
+NEW ACCOUNT
+personal.newAccount("pass")
+
+MINING
+miner.setEtherbase(personal.listAccounts[0])
+miner.start()
+
+ACCOUNT BALANCE
+primary = eth.accounts[0]
+web3.fromWei(eth.getBalance(primary), "ether");
